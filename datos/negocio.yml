@@ -1,0 +1,46 @@
+# Los datos de tu negocio, que se escriben una vez y salen donde hacen falta: la cabecera, el pie, la página de
+# contacto, la de ubicación y los datos estructurados que leen los buscadores. En una plantilla son
+# `datos.negocio.nombre`, y en un texto en Markdown, [dato clave="negocio.nombre"].
+nombre: Pedalada
+tipo: Taller y tienda de bicicletas
+lema: Tu bici, a punto para rodar.
+
+# Qué clase de negocio es para los buscadores. Puede ser LocalBusiness, o uno más concreto: Dentist, Restaurant,
+# HairSalon, Store, AutoRepair, BicycleStore… (lista completa en https://schema.org/LocalBusiness)
+tipoSchema: BicycleStore
+
+# El teléfono tal como se lee y en formato internacional (para el enlace de llamar). El WhatsApp, solo con cifras y con
+# el prefijo del país; si lo dejas vacío, no sale el botón.
+telefono: 944 000 000
+telefonoInternacional: "+34944000000"
+whatsapp: "34600000000"
+email: hola@pedalada.example
+
+direccion:
+  calle: Calle Ejemplo 12
+  codigoPostal: "48001"
+  localidad: Bilbao
+  provincia: Bizkaia
+  pais: ES
+
+# Para el enlace al mapa y para los buscadores. Las coordenadas de tu local las ves en cualquier mapa, con clic derecho.
+coordenadas:
+  lat: 43.2631
+  lng: -2.9340
+
+# Cuánto cuesta ir, en símbolos: €, €€ o €€€ (opcional)
+precios: €€
+
+# Cómo llegar sin coche, una línea por cada medio
+comoLlegar:
+  - medio: Metro
+    texto: Moyúa (líneas 1 y 2), a cinco minutos andando.
+  - medio: Autobús
+    texto: Líneas 38 y 56, parada Gran Vía.
+  - medio: Coche
+    texto: Aparcamiento público a cien metros, en la calle Ejemplo 20.
+
+# Tus redes, con la dirección completa. Una que dejes vacía no sale en ninguna parte.
+redes:
+  - nombre: Instagram
+    enlace: https://www.instagram.com/ejemplo

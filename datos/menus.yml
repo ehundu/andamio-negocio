@@ -1,0 +1,10 @@
+# El menú de la cabecera. Para añadir una página, una entrada nueva en esta lista
+principal:
+  - texto: Servicios
+    enlace: /servicios/
+  - texto: Dónde estamos
+    enlace: /donde-estamos/
+  - texto: Sobre nosotros
+    enlace: /sobre-nosotros/
+  - texto: Contacto
+    enlace: /contacto/

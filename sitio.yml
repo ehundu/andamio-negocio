@@ -1,0 +1,25 @@
+# Lo único obligatorio es el nombre y la dirección del sitio, sin ruta
+nombre: Pedalada
+url: https://ejemplo.com
+descripcion: Taller y tienda de bicicletas en Bilbao. Revisiones, reparaciones y alquiler.
+
+formato: 1
+idioma: es
+zonaHoraria: Europe/Madrid
+
+# Un enlace a otro dominio escrito en Markdown se abre en otra pestaña, con un aviso para los lectores de pantalla
+enlacesExternos:
+  aviso: (se abre en una pestaña nueva)
+  clase: oculto
+  noreferrer: sí
+
+# Para publicar con `php vendor/bin/ehundu desplegar`, descomenta y rellena esta sección.
+# La contraseña no va aquí, que se comparte y se versiona: va en un fichero .secretos.yml
+# (ver el README.md).
+#
+# despliegue:
+#   destino: sftp
+#   servidor: sftp.ejemplo.com
+#   usuario: usuario
+#   ruta: /home/usuario/www
+#   huella: SHA256:...   # la da el primer despliegue; compruébala con quien administra el servidor

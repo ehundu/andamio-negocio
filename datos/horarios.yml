@@ -1,0 +1,46 @@
+# El horario de la semana, un día por línea. Los tramos se escriben «de-a» con las horas de 24: "09:30-13:30". Un día sin
+# tramos sale como «Cerrado». `schema` es el nombre inglés del día, que necesitan los buscadores: no lo cambies.
+semana:
+  - dia: Lunes
+    schema: Monday
+    tramos: ["09:30-13:30", "16:00-20:00"]
+  - dia: Martes
+    schema: Tuesday
+    tramos: ["09:30-13:30", "16:00-20:00"]
+  - dia: Miércoles
+    schema: Wednesday
+    tramos: ["09:30-13:30", "16:00-20:00"]
+  - dia: Jueves
+    schema: Thursday
+    tramos: ["09:30-13:30", "16:00-20:00"]
+  - dia: Viernes
+    schema: Friday
+    tramos: ["09:30-13:30", "16:00-20:00"]
+  - dia: Sábado
+    schema: Saturday
+    tramos: ["10:00-14:00"]
+  - dia: Domingo
+    schema: Sunday
+    tramos: []
+
+# Los días que no siguen el horario normal: festivos, vacaciones, un cierre por obras. `cuando` y `horario` son lo que ve
+# el visitante. Para que también lo lean los buscadores, añade las fechas con el formato "AAAA-MM-DD", entre comillas:
+# `fechas` (una lista de días sueltos) o `desde` y `hasta` (un periodo), y `tramos` con el horario de esos días (vacío,
+# si cierras). Quita las que ya han pasado: el sitio no sabe qué día es hoy.
+excepciones:
+  - cuando: 25 de diciembre
+    horario: Cerrado
+    fechas: ["2026-12-25"]
+    tramos: []
+  - cuando: 24 y 31 de diciembre
+    horario: De 9:30 a 14:00
+    fechas: ["2026-12-24", "2026-12-31"]
+    tramos: ["09:30-14:00"]
+  - cuando: Del 10 al 23 de agosto
+    horario: Cerrado por vacaciones
+    desde: "2027-08-10"
+    hasta: "2027-08-23"
+    tramos: []
+
+# Una nota que sale debajo de la tabla (opcional)
+nota: Para reparaciones largas, mejor con cita.

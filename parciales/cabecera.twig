@@ -1,0 +1,18 @@
+<header class="cabecera">
+  <div class="contenedor cabecera__barra">
+    <a class="cabecera__nombre" href="/">{{ datos.negocio.nombre }}</a>
+    {# El botón del menú en pantallas estrechas, sin JavaScript: una casilla (un interruptor para los lectores de
+       pantalla) y su etiqueta. Con una pantalla ancha no se ven y el menú está siempre a la vista #}
+    <input type="checkbox" role="switch" id="cabecera-menu" class="cabecera__casilla">
+    <label for="cabecera-menu" class="cabecera__boton"><span class="cabecera__icono" aria-hidden="true"></span><span class="oculto">Menú</span></label>
+    <nav aria-label="Principal">
+      <ul>
+        {% for entrada in datos.menus.principal %}
+        <li><a href="{{ entrada.enlace }}"{% if activo(entrada.enlace) %} aria-current="page"{% endif %}>{{ entrada.texto }}</a></li>
+        {% endfor %}
+        {# En el menú desplegable, un botón para llamar: es lo que más busca quien llega desde el móvil #}
+        <li class="cabecera__llamar"><a class="boton" href="tel:{{ datos.negocio.telefonoInternacional }}">Llamar al {{ datos.negocio.telefono }}</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

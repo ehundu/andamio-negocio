@@ -1,0 +1,5 @@
+# Lo que comparten todos los servicios: no hace falta repetirlo en cada uno. La etiqueta `servicios` los reúne en la
+# colección que leen la portada y la lista.
+plantilla: servicio
+etiquetas: [servicios]
+url: "/servicios/{{ nombreDeFichero }}/"

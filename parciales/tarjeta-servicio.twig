@@ -1,0 +1,11 @@
+{# La tarjeta de un servicio: su nombre, una frase, su precio y lo que dura. Recibe `s` (el servicio) #}
+<li class="tarjeta">
+  <a class="tarjeta__enlace" href="{{ s.url }}">
+    <strong>{{ s.titulo }}</strong>
+    {% if s.descripcion %}<span class="tarjeta__texto">{{ s.descripcion }}</span>{% endif %}
+    <span class="tarjeta__datos">
+      {% if s.precio %}<span class="tarjeta__precio">{{ s.precio }}</span>{% endif %}
+      {% if s.duracion %}<span>{{ s.duracion }}</span>{% endif %}
+    </span>
+  </a>
+</li>

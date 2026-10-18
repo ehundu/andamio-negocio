@@ -1,0 +1,27 @@
+{% extends 'plantillas/base.twig' %}
+
+{# Contacto: el texto de la página y, debajo, los datos de datos/negocio.yml: teléfono, WhatsApp, correo y redes #}
+{% block cuerpo %}
+{% set n = datos.negocio %}
+<article class="contenedor pagina">
+  <h1>{{ pagina.titulo }}</h1>
+  <div class="prosa">{{ pagina.contenido }}</div>
+
+  <ul class="contacto">
+    <li><span>Teléfono</span> <a href="tel:{{ n.telefonoInternacional }}">{{ n.telefono }}</a></li>
+    {% if n.whatsapp %}
+    <li><span>WhatsApp</span> <a href="https://wa.me/{{ n.whatsapp }}" target="_blank" rel="noopener noreferrer">Escríbenos<span class="oculto"> (se abre en una pestaña nueva)</span></a></li>
+    {% endif %}
+    <li><span>Correo</span> <a href="mailto:{{ n.email }}">{{ n.email }}</a></li>
+    <li><span>Dirección</span> {{ n.direccion.calle }}, {{ n.direccion.codigoPostal }} {{ n.direccion.localidad }} · <a href="/donde-estamos/">cómo llegar</a></li>
+    {% for red in n.redes %}
+    {% if red.enlace %}
+    <li><span>{{ red.nombre }}</span> <a href="{{ red.enlace }}" target="_blank" rel="noopener noreferrer">{{ red.enlace|replace({'https://': '', 'www.': ''}) }}<span class="oculto"> (se abre en una pestaña nueva)</span></a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+
+  <h2 class="contacto__horario">Cuándo estamos</h2>
+  {% include 'parciales/horarios.twig' %}
+</article>
+{% endblock %}

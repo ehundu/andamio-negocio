@@ -1,0 +1,48 @@
+{% extends 'plantillas/base.twig' %}
+
+{# La portada: el nombre, dos botones (llamar y cómo llegar), los servicios con `destacado: sí`, el horario y la dirección #}
+{% block datosEstructurados %}
+{% include 'parciales/datos-estructurados.twig' %}
+{% endblock %}
+
+{% block cuerpo %}
+{% set n = datos.negocio %}
+<div class="contenedor portada">
+  <header class="portada__cabecera">
+    <p class="portada__tipo">{{ n.tipo }} · {{ n.direccion.localidad }}</p>
+    <h1>{{ pagina.titulo }}</h1>
+    <div class="prosa">{{ pagina.contenido }}</div>
+    <p class="portada__botones">
+      <a class="boton" href="tel:{{ n.telefonoInternacional }}">Llamar al {{ n.telefono }}</a>
+      {% if n.whatsapp %}<a class="boton boton--claro" href="https://wa.me/{{ n.whatsapp }}" target="_blank" rel="noopener noreferrer">WhatsApp<span class="oculto"> (se abre en una pestaña nueva)</span></a>{% endif %}
+      <a class="boton boton--claro" href="/donde-estamos/">Cómo llegar</a>
+    </p>
+  </header>
+
+  <section class="portada__bloque" aria-labelledby="servicios">
+    <h2 id="servicios">Lo que hacemos</h2>
+    <ul class="tarjetas">
+      {# `destacado: sí` es un campo propio, así que vale el texto «sí» #}
+      {% for s in coleccion('servicios')|donde('destacado', 'sí')|orden('orden') %}
+      {% include 'parciales/tarjeta-servicio.twig' %}
+      {% endfor %}
+    </ul>
+    <p class="portada__mas"><a href="/servicios/">Ver todos los servicios y precios →</a></p>
+  </section>
+
+  <section class="portada__bloque portada__dos" aria-labelledby="horario">
+    <div>
+      <h2 id="horario">Horario</h2>
+      {% include 'parciales/horarios.twig' %}
+    </div>
+    <div>
+      <h2>Dónde estamos</h2>
+      <address class="direccion">
+        {{ n.direccion.calle }}<br>
+        {{ n.direccion.codigoPostal }} {{ n.direccion.localidad }} ({{ n.direccion.provincia }})
+      </address>
+      <p><a href="/donde-estamos/">Ver el mapa y cómo llegar →</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

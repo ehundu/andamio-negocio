@@ -1,0 +1,27 @@
+{% set n = datos.negocio %}
+<footer class="pie">
+  <div class="contenedor pie__rejilla">
+    <div>
+      <p class="pie__titulo">{{ n.nombre }}</p>
+      <p>{{ n.tipo }}</p>
+    </div>
+    <address>
+      <p class="pie__titulo">Dónde</p>
+      <p>{{ n.direccion.calle }}<br>{{ n.direccion.codigoPostal }} {{ n.direccion.localidad }}</p>
+      <p><a href="tel:{{ n.telefonoInternacional }}">{{ n.telefono }}</a></p>
+    </address>
+    <div>
+      <p class="pie__titulo">Información</p>
+      <ul>
+        <li><a href="/preguntas-frecuentes/">Preguntas frecuentes</a></li>
+        <li><a href="/aviso-legal/">Aviso legal</a></li>
+        <li><a href="/privacidad/">Política de privacidad</a></li>
+        <li><a href="/cookies/">Política de cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="contenedor pie__fin">
+    <p>© {{ n.nombre }}</p>
+    <p><a href="https://ehundu.com" target="_blank" rel="noopener noreferrer">Hecho con Ehundu<span class="oculto"> (se abre en una pestaña nueva)</span></a></p>
+  </div>
+</footer>

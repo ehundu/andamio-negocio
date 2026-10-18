@@ -1,0 +1,29 @@
+{# La tabla del horario de la semana, con las excepciones y la nota de datos/horarios.yml. Cada tramo "09:30-13:30" se
+   escribe «de 9:30 a 13:30» #}
+{% set h = datos.horarios %}
+<table class="horarios">
+  <caption class="oculto">Horario de la semana</caption>
+  <tbody>
+    {% for d in h.semana %}
+    <tr>
+      <th scope="row">{{ d.dia }}</th>
+      <td>
+        {% if d.tramos|length %}
+        {% for t in d.tramos %}{% set par = t|split('-') %}{{ loop.first ? '' : ' y ' }}<span class="horarios__tramo">{{ par[0] }} a {{ par[1] }}</span>{% endfor %}
+        {% else %}
+        <span class="horarios__cerrado">Cerrado</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if h.excepciones|length %}
+<h3 class="horarios__excepciones">Días especiales</h3>
+<ul class="horarios__lista">
+  {% for e in h.excepciones %}
+  <li><strong>{{ e.cuando }}:</strong> {{ e.horario }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% if h.nota %}<p class="horarios__nota">{{ h.nota }}</p>{% endif %}

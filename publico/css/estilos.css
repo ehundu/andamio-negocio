@@ -1,0 +1,766 @@
+/* Los estilos del sitio, en un solo fichero. Los colores y las medidas están arriba, en variables:
+   cambiando esas líneas cambia el aspecto de todo. Respeta el modo oscuro del sistema. */
+
+:root {
+  --fondo: #fafaf8;
+  --tinta: #1b2320;
+  --texto: #424b47;
+  --apagado: #66706b;
+  --acento: #0f766e;
+  --sobre-acento: #ffffff;
+  --linea: #dfe5e1;
+  --suave: #eef3f0;
+  --tarjeta: #ffffff;
+  --aviso: #fff4cf;
+  --aviso-borde: #d6a800;
+
+  --tipo: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* La anchura del sitio, la del texto y la de las páginas con dos columnas */
+  --ancho: 68rem;
+  --ancho-texto: 44rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #121614;
+    --tinta: #f1f4f2;
+    --texto: #c6ccc8;
+    --apagado: #97a09b;
+    --acento: #5eead4;
+    --sobre-acento: #0b1f1c;
+    --linea: #2a312d;
+    --suave: #1a201d;
+    --tarjeta: #171c19;
+    --aviso: #3a3210;
+    --aviso-borde: #b89500;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font: 1.0625rem/1.65 var(--tipo);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--tinta);
+  line-height: 1.15;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw + 1rem, 3rem);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--acento);
+}
+
+address {
+  font-style: normal;
+}
+
+/* Siempre se ve dónde está el foco del teclado */
+:focus-visible {
+  outline: 3px solid var(--acento);
+  outline-offset: 3px;
+}
+
+.contenedor {
+  width: min(100% - 2rem, var(--ancho));
+  margin-inline: auto;
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* El enlace para saltar al contenido: solo se ve al llegar a él con el teclado */
+.saltar {
+  position: absolute;
+  top: -4rem;
+  left: 1rem;
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: var(--tinta);
+  color: var(--fondo);
+}
+
+.saltar:focus {
+  top: 1rem;
+}
+
+/* La cabecera */
+
+.cabecera {
+  border-bottom: 1px solid var(--linea);
+}
+
+.cabecera__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block: 1rem;
+}
+
+.cabecera__nombre {
+  color: var(--tinta);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.cabecera ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cabecera nav a {
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.cabecera nav a:hover,
+.cabecera nav a[aria-current="page"] {
+  color: var(--tinta);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.4em;
+}
+
+/* El botón del menú y el de llamar del menú desplegable solo existen en pantallas estrechas */
+.cabecera__casilla,
+.cabecera__boton,
+.cabecera__llamar {
+  display: none;
+}
+
+/* Pantallas estrechas (móviles y tablets en vertical): la barra es una sola fila, con el nombre y el botón, y el menú se
+   abre debajo al marcar la casilla */
+@media (max-width: 48rem) {
+  .cabecera__barra {
+    gap: 0 1rem;
+    padding-block: 0.75rem;
+  }
+
+  /* Visualmente oculta pero con foco: el anillo de foco lo lleva la etiqueta */
+  .cabecera__casilla {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+  }
+
+  .cabecera__boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--tinta);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .cabecera__boton:hover {
+    border-color: var(--acento);
+  }
+
+  .cabecera__casilla:focus-visible + .cabecera__boton {
+    outline: 3px solid var(--acento);
+    outline-offset: 3px;
+  }
+
+  /* Las tres rayas (la del medio es el propio elemento) y, con el menú abierto, una aspa */
+  .cabecera__icono,
+  .cabecera__icono::before,
+  .cabecera__icono::after {
+    display: block;
+    width: 1.25rem;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--tinta);
+  }
+
+  .cabecera__icono {
+    position: relative;
+  }
+
+  .cabecera__icono::before,
+  .cabecera__icono::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  .cabecera__icono::before {
+    top: -6px;
+  }
+
+  .cabecera__icono::after {
+    top: 6px;
+  }
+
+  .cabecera__casilla:checked + .cabecera__boton .cabecera__icono {
+    background: transparent;
+  }
+
+  .cabecera__casilla:checked + .cabecera__boton .cabecera__icono::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .cabecera__casilla:checked + .cabecera__boton .cabecera__icono::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  .cabecera nav {
+    display: none;
+    order: 3;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .cabecera__casilla:checked ~ nav {
+    display: block;
+  }
+
+  .cabecera ul {
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--linea);
+  }
+
+  .cabecera li + li {
+    border-top: 1px solid var(--linea);
+  }
+
+  .cabecera nav a {
+    display: block;
+    padding: 0.75rem 0;
+    font-size: 1.125rem;
+  }
+
+  .cabecera nav a[aria-current="page"] {
+    color: var(--acento);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cabecera nav .cabecera__llamar {
+    display: block;
+    padding-block: 0.9rem 0.5rem;
+    border-top: 0;
+  }
+
+  /* El botón de llamar conserva los colores de un botón y no los de un enlace del menú */
+  .cabecera nav .boton {
+    padding: 0.7rem 1.4rem;
+    color: var(--sobre-acento);
+    font-size: 1.0625rem;
+    text-align: center;
+  }
+
+  .cabecera nav .boton:hover {
+    color: var(--fondo);
+  }
+}
+
+/* El pie */
+
+.pie {
+  margin-top: 5rem;
+  padding-block: 2.5rem 1.5rem;
+  border-top: 1px solid var(--linea);
+  background: var(--suave);
+  color: var(--texto);
+  font-size: 0.9375rem;
+}
+
+.pie__rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1.5rem 2rem;
+}
+
+.pie p {
+  margin: 0.2rem 0;
+}
+
+.pie__titulo {
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+.pie ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pie li {
+  margin: 0.2rem 0;
+}
+
+.pie__fin {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+  color: var(--apagado);
+}
+
+.pie__fin p {
+  margin: 0;
+}
+
+/* Un botón, y su versión clara */
+
+.boton {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border: 2px solid var(--acento);
+  border-radius: 10px;
+  background: var(--acento);
+  color: var(--sobre-acento);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.boton:hover {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: var(--fondo);
+}
+
+.boton--claro {
+  background: transparent;
+  color: var(--acento);
+}
+
+/* Una página de texto (sobre nosotros, preguntas, textos legales, 404) */
+
+.pagina {
+  width: min(100% - 2rem, var(--ancho-texto));
+  padding-block: 3rem 1rem;
+}
+
+.pagina--ancha {
+  width: min(100% - 2rem, var(--ancho));
+}
+
+.antetitulo {
+  margin: 0 0 0.75rem;
+  color: var(--apagado);
+  font-size: 0.9375rem;
+}
+
+.antetitulo a {
+  color: var(--apagado);
+}
+
+/* El texto: Markdown corriente, así que todo lo que lleva se estiliza aquí */
+
+.prosa {
+  max-width: var(--ancho-texto);
+}
+
+.pagina h1 + .prosa,
+.listado h1 + .prosa {
+  margin-top: 1.25rem;
+}
+
+.prosa > :first-child {
+  margin-top: 0;
+}
+
+.prosa h2 {
+  margin: 2.25rem 0 0.4rem;
+  font-size: 1.375rem;
+}
+
+.prosa p,
+.prosa ul,
+.prosa ol,
+.prosa blockquote {
+  margin: 1rem 0 0;
+}
+
+.prosa ul,
+.prosa ol {
+  padding-left: 1.5rem;
+}
+
+.prosa li + li {
+  margin-top: 0.4rem;
+}
+
+.prosa code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--suave);
+  font: 0.875em ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* El recuadro del atajo [aviso]: los textos legales de modelo lo llevan arriba, para no olvidarse de revisarlos */
+
+.aviso {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--linea);
+  border-left-width: 5px;
+  border-radius: 8px;
+  background: var(--suave);
+  color: var(--tinta);
+  font-size: 0.9375rem;
+}
+
+.aviso--modelo {
+  border-color: var(--aviso-borde);
+  background: var(--aviso);
+}
+
+.aviso > :first-child {
+  margin-top: 0;
+}
+
+.aviso > :last-child {
+  margin-bottom: 0;
+}
+
+/* La portada */
+
+.portada__cabecera {
+  max-width: 46rem;
+  padding-block: clamp(2.5rem, 7vw, 5rem) 2.5rem;
+}
+
+.portada__tipo {
+  margin: 0 0 1rem;
+  color: var(--acento);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.portada__cabecera h1 {
+  font-size: clamp(2.5rem, 7vw + 0.5rem, 4.5rem);
+  letter-spacing: -0.035em;
+}
+
+.portada__cabecera .prosa {
+  margin-top: 1.25rem;
+  font-size: 1.1875rem;
+}
+
+.portada__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.75rem 0 0;
+}
+
+.portada__bloque {
+  margin-top: 3.5rem;
+}
+
+.portada__bloque h2 {
+  margin: 0 0 1.25rem;
+}
+
+.portada__mas {
+  margin: 1.5rem 0 0;
+  font-weight: 700;
+}
+
+.portada__dos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 2rem 3rem;
+}
+
+.direccion {
+  margin: 0 0 1rem;
+  color: var(--tinta);
+  font-size: 1.125rem;
+}
+
+/* Las tarjetas de los servicios */
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarjeta__enlace {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  height: 100%;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.tarjeta__enlace:hover {
+  border-color: var(--acento);
+}
+
+.tarjeta__enlace strong {
+  font-size: 1.1875rem;
+  line-height: 1.25;
+}
+
+.tarjeta__texto {
+  color: var(--texto);
+  font-size: 0.9375rem;
+}
+
+.tarjeta__datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  color: var(--apagado);
+  font-size: 0.9375rem;
+}
+
+.tarjeta__precio {
+  color: var(--acento);
+  font-weight: 700;
+}
+
+/* La lista de servicios */
+
+.listado {
+  padding-block: 2.5rem 1rem;
+}
+
+.listado .tarjetas {
+  margin-top: 2rem;
+}
+
+/* La ficha de un servicio */
+
+.ficha {
+  width: min(100% - 2rem, var(--ancho-texto));
+  padding-block: 2.5rem 1rem;
+}
+
+.ficha__resumen {
+  margin: 1rem 0 0;
+  font-size: 1.25rem;
+}
+
+.ficha__datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  margin: 2rem 0;
+  padding-block: 1.25rem;
+  border-block: 1px solid var(--linea);
+}
+
+.ficha__datos dt {
+  color: var(--apagado);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ficha__datos dd {
+  margin: 0.15rem 0 0;
+  color: var(--tinta);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.ficha__incluye {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+}
+
+.ficha__incluye li + li {
+  margin-top: 0.35rem;
+}
+
+.ficha .prosa {
+  margin-top: 2rem;
+}
+
+.ficha__cita {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  background: var(--suave);
+}
+
+.ficha__cita h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+}
+
+.ficha__cita p {
+  margin: 0;
+}
+
+/* Dónde estamos */
+
+.donde {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1rem 3.5rem;
+  margin-top: 1.5rem;
+}
+
+.donde h2 {
+  margin-top: 1.5rem;
+}
+
+.como-llegar {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.como-llegar li {
+  padding-block: 0.5rem;
+  border-top: 1px solid var(--linea);
+}
+
+.como-llegar li:last-child {
+  border-bottom: 1px solid var(--linea);
+}
+
+/* La tabla del horario */
+
+.horarios {
+  width: 100%;
+  max-width: 30rem;
+  border-collapse: collapse;
+}
+
+.horarios th,
+.horarios td {
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--linea);
+  text-align: left;
+  vertical-align: top;
+}
+
+.horarios tr:last-child th,
+.horarios tr:last-child td {
+  border-bottom: 1px solid var(--linea);
+}
+
+.horarios th {
+  width: 8rem;
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+.horarios__cerrado {
+  color: var(--apagado);
+}
+
+.horarios__excepciones {
+  margin: 1.5rem 0 0.25rem;
+  font-size: 1.0625rem;
+}
+
+.horarios__lista {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.horarios__nota {
+  margin: 1rem 0 0;
+  color: var(--apagado);
+  font-size: 0.9375rem;
+}
+
+/* Contacto */
+
+.contacto {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contacto li {
+  display: flex;
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--linea);
+}
+
+.contacto li:last-child {
+  border-bottom: 1px solid var(--linea);
+}
+
+.contacto li > span:first-child {
+  flex: 0 0 6.5rem;
+  color: var(--apagado);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.contacto__horario {
+  margin-top: 2.5rem;
+}

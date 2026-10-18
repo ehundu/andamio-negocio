@@ -1,0 +1,41 @@
+{% extends 'plantillas/base.twig' %}
+
+{# Dónde estamos: la dirección, el enlace al mapa, cómo llegar y el horario completo con sus excepciones #}
+{% block datosEstructurados %}
+{% include 'parciales/datos-estructurados.twig' %}
+{% endblock %}
+
+{% block cuerpo %}
+{% set n = datos.negocio %}
+{# El mapa es un enlace a OpenStreetMap, no un mapa incrustado: así la página no carga nada de terceros ni pone cookies #}
+{% set mapa = 'https://www.openstreetmap.org/?mlat=' ~ n.coordenadas.lat ~ '&mlon=' ~ n.coordenadas.lng ~ '#map=17/' ~ n.coordenadas.lat ~ '/' ~ n.coordenadas.lng %}
+<div class="contenedor pagina pagina--ancha">
+  <h1>{{ pagina.titulo }}</h1>
+  <div class="prosa">{{ pagina.contenido }}</div>
+
+  <div class="donde">
+    <section aria-labelledby="direccion">
+      <h2 id="direccion">Dirección</h2>
+      <address class="direccion">
+        {{ n.direccion.calle }}<br>
+        {{ n.direccion.codigoPostal }} {{ n.direccion.localidad }} ({{ n.direccion.provincia }})
+      </address>
+      <p><a class="boton" href="{{ mapa }}" target="_blank" rel="noopener noreferrer">Ver en el mapa<span class="oculto"> (se abre en una pestaña nueva)</span></a></p>
+
+      {% if n.comoLlegar|length %}
+      <h2>Cómo llegar</h2>
+      <ul class="como-llegar">
+        {% for c in n.comoLlegar %}
+        <li><strong>{{ c.medio }}.</strong> {{ c.texto }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+
+    <section aria-labelledby="horario">
+      <h2 id="horario">Horario</h2>
+      {% include 'parciales/horarios.twig' %}
+    </section>
+  </div>
+</div>
+{% endblock %}

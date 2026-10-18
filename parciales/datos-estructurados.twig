@@ -1,0 +1,59 @@
+{# Los datos estructurados (JSON-LD) que leen los buscadores para enseñar tu negocio con su horario, su dirección y su
+   teléfono. Salen de datos/negocio.yml y datos/horarios.yml, así que no hay que escribirlos dos veces #}
+{% set n = datos.negocio %}
+{% set h = datos.horarios %}
+
+{# El horario de cada día: una entrada por tramo #}
+{% set semana = [] %}
+{% for d in h.semana %}
+{% for t in d.tramos %}
+{% set par = t|split('-') %}
+{% set semana = semana|merge([{'@type': 'OpeningHoursSpecification', 'dayOfWeek': d.schema, 'opens': par[0], 'closes': par[1]}]) %}
+{% endfor %}
+{% endfor %}
+
+{# Las excepciones que traen fechas: un día suelto, o un periodo, con su horario o cerrado (de 00:00 a 00:00) #}
+{% set especiales = [] %}
+{% for e in h.excepciones %}
+{% set periodos = [] %}
+{% for f in e.fechas|default([]) %}
+{% set periodos = periodos|merge([{'desde': f, 'hasta': f}]) %}
+{% endfor %}
+{% if e.desde %}
+{% set periodos = periodos|merge([{'desde': e.desde, 'hasta': e.hasta|default(e.desde)}]) %}
+{% endif %}
+{% for p in periodos %}
+{% if e.tramos|length %}
+{% for t in e.tramos %}
+{% set par = t|split('-') %}
+{% set especiales = especiales|merge([{'@type': 'OpeningHoursSpecification', 'validFrom': p.desde, 'validThrough': p.hasta, 'opens': par[0], 'closes': par[1]}]) %}
+{% endfor %}
+{% else %}
+{% set especiales = especiales|merge([{'@type': 'OpeningHoursSpecification', 'validFrom': p.desde, 'validThrough': p.hasta, 'opens': '00:00', 'closes': '00:00'}]) %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+{% set negocio = {
+  '@context': 'https://schema.org',
+  '@type': n.tipoSchema|default('LocalBusiness'),
+  'name': n.nombre,
+  'description': sitio.descripcion,
+  'url': sitio.url ~ '/',
+  'telephone': n.telefonoInternacional,
+  'email': n.email,
+  'priceRange': n.precios,
+  'address': {
+    '@type': 'PostalAddress',
+    'streetAddress': n.direccion.calle,
+    'postalCode': n.direccion.codigoPostal,
+    'addressLocality': n.direccion.localidad,
+    'addressRegion': n.direccion.provincia,
+    'addressCountry': n.direccion.pais
+  },
+  'geo': {'@type': 'GeoCoordinates', 'latitude': n.coordenadas.lat, 'longitude': n.coordenadas.lng},
+  'openingHoursSpecification': semana,
+  'specialOpeningHoursSpecification': especiales,
+  'sameAs': n.redes|map(r => r.enlace)|filter(e => e)
+} %}
+<script type="application/ld+json">{{ negocio|filter(v => v is not empty)|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}</script>
